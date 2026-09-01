@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    // What JavaScript version to compile to.
+    // ES2022 = modern JS features (async/await, etc.) — Node 20 supports it natively
+    "target": "ES2022",
+    // How modules are loaded.
+    // "commonjs" = uses require()/module.exports — the standard for Node.js
+    "module": "commonjs",
+    // Where compiled .js files go.
+    // Your TypeScript (src/) → compiled JavaScript (dist/)
+    // This is what Node actually runs in production
+    "outDir": "./dist",
+    // Where your source .ts files live.
+    // Tells the compiler "only look in src/ for code to compile"
+    "rootDir": "./src",
+    // Enables strict type checking.
+    // Catches bugs at compile time — e.g., null checks, type mismatches
+    "strict": true,
+    // Fixes compatibility between ES modules and CommonJS.
+    // Lets you write: import express from 'express'
+    // Instead of:     import * as express from 'express'
+    "esModuleInterop": true,
+    // Allows importing .json files.
+    // e.g., import config from './config.json'
+    "resolveJsonModules": true
+  },
+  // Only compile files inside src/ — ignores node_modules, scripts, etc.
+  "include": [
+    "src/**/*"
+  ]
+}

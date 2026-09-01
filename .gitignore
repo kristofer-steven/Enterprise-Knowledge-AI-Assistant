@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.env
+.env.*
+n8n-data/
+docs/week-*-guide.md
