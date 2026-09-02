@@ -19,10 +19,7 @@
     // Fixes compatibility between ES modules and CommonJS.
     // Lets you write: import express from 'express'
     // Instead of:     import * as express from 'express'
-    "esModuleInterop": true,
-    // Allows importing .json files.
-    // e.g., import config from './config.json'
-    "resolveJsonModules": true
+    "esModuleInterop": true
   },
   // Only compile files inside src/ — ignores node_modules, scripts, etc.
   "include": [
