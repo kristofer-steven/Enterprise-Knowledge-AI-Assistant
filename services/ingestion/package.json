@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test:pinecone": "tsx --env-file=../../.env src/test-pinecone.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@pinecone-database/pinecone": "^8.2.0",
     "express": "^5.2.1"
   }
 }
