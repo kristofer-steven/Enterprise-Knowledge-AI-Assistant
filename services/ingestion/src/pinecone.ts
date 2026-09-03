@@ -1,20 +1,12 @@
-import { Pinecone, RecordMetadata } from '@pinecone-database/pinecone';
+import path from 'path';
+import dotenv from 'dotenv';
+dotenv.config({ path: [path.resolve(__dirname, '../../../.env'), path.resolve(process.cwd(), '../../.env'), path.resolve(process.cwd(), '.env')] });
 
-// --- Types ---
-export type ChunkMetadata = RecordMetadata & {
-    document_id: string;
-    title: string;
-    category: string;
-    page: number;
-    chunk_index: number;
-    content: string;       // raw text — needed for retrieval in Week 2
-};
+import { Pinecone } from '@pinecone-database/pinecone';
+import { ChunkMetadata, VectorToUpsert } from './types';
 
-export interface VectorToUpsert {
-    id: string;            // e.g., "travel-policy#chunk-0"
-    values: number[];      // the embedding vector
-    metadata: ChunkMetadata;
-}
+// Re-export types for consumers of pinecone.ts
+export { ChunkMetadata, VectorToUpsert };
 
 // --- Initialize Pinecone Client ---
 const pc = new Pinecone({
