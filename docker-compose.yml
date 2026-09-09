@@ -10,6 +10,7 @@ services:
       - n8n-data:/home/node/.n8n
     networks:
       - app-network
+
   ingestion:
     build:
       context: ./services/ingestion
@@ -22,8 +23,23 @@ services:
       - n8n
     networks:
       - app-network
+
+  query:
+    build:
+      context: ./services/query
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env
+    depends_on:
+      - ingestion
+    networks:
+      - app-network
+
 volumes:
   n8n-data:
+  
 networks:
   app-network:
     driver: bridge
