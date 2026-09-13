@@ -1,0 +1,126 @@
+[
+  {
+    "updatedAt": "2026-09-13T10:23:09.000Z",
+    "createdAt": "2026-09-13T10:14:43.245Z",
+    "id": "X4ybYwpVspD31bzI",
+    "name": "Question Answering Pipeline",
+    "description": null,
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "chat",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "9b0256ff-6dac-40e0-86f7-276782dfda9d",
+        "name": "Webhook",
+        "webhookId": "e2866ed4-b294-4f36-9ef9-88af42838936"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://query:3002/api/chat",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ message: $json.body?.message, category: $json.body?.category || undefined }) }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          224,
+          0
+        ],
+        "id": "db4a2dfc-f39f-42d1-bbdc-5b0d1c5906fe",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "respondWith": "allIncomingItems",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          448,
+          0
+        ],
+        "id": "3b5d9095-7222-4e9d-a09a-6e5fe3533569",
+        "name": "Respond to Webhook"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate"
+    },
+    "staticData": null,
+    "meta": {
+      "instanceId": "9c35967337366664276745c1acd0a3c6bffa8e66de14b77ed5b069b713203ee3"
+    },
+    "nodeGroups": [],
+    "pinData": {},
+    "versionId": "03408c12-4f8a-401e-9e2c-dd408fc5b8af",
+    "activeVersionId": "03408c12-4f8a-401e-9e2c-dd408fc5b8af",
+    "versionCounter": 14,
+    "triggerCount": 1,
+    "sourceWorkflowId": null,
+    "tags": [],
+    "shared": [
+      {
+        "updatedAt": "2026-09-13T10:14:43.250Z",
+        "createdAt": "2026-09-13T10:14:43.250Z",
+        "role": "workflow:owner",
+        "workflowId": "X4ybYwpVspD31bzI",
+        "projectId": "WlQPeM1cpzwM22q7",
+        "project": {
+          "updatedAt": "2026-09-13T10:13:56.095Z",
+          "createdAt": "2026-09-02T13:14:49.949Z",
+          "id": "WlQPeM1cpzwM22q7",
+          "name": "kristofer steven <kristofersteven0@gmail.com>",
+          "type": "personal",
+          "icon": null,
+          "description": null,
+          "customTelemetryTags": [],
+          "creatorId": "df233620-4ee5-49c7-b56c-daa91d18cf6c"
+        }
+      }
+    ],
+    "versionMetadata": {
+      "name": null,
+      "description": null
+    }
+  }
+]

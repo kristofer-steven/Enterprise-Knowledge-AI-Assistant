@@ -21,8 +21,14 @@ app.get('/health', (req: Request, res: Response) => {
 app.post('/api/chat', async (req: Request<{}, {}, ChatRequest>, res: Response<ChatResponse | { success: false; error: string }>) => {
     try {
         const { message, category, topK } = req.body;
+        const cleanMessage = typeof message === 'string' ? message.trim().replace(/^=/, '').trim() : '';
+        const cleanCategory = typeof category === 'string' && category.trim() !== '' && category.trim() !== '='
+            ? category.trim()
+            : undefined;
 
-        if (!message || typeof message !== 'string' || message.trim() === '') {
+        console.log(`[RAG Chat] Received message: "${cleanMessage}", category: "${cleanCategory || 'all'}"`);
+
+        if (!cleanMessage) {
             return res.status(400).json({
                 success: false,
                 error: 'Query message is required and cannot be empty.',
@@ -30,13 +36,13 @@ app.post('/api/chat', async (req: Request<{}, {}, ChatRequest>, res: Response<Ch
         }
 
         // 1. Retrieve semantically matching chunks
-        const chunks = await retrieveRelevantChunks(message.trim(), {
-            categoryFilter: category,
+        const chunks = await retrieveRelevantChunks(cleanMessage, {
+            categoryFilter: cleanCategory,
             topK,
         });
 
         // 2. Generate grounded answer via LLM
-        const ragResult = await generateGroundedAnswer(message.trim(), chunks);
+        const ragResult = await generateGroundedAnswer(cleanMessage, chunks);
 
         // 3. Return formatted response
         return res.status(200).json({
