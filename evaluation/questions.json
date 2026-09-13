@@ -1,0 +1,80 @@
+[
+    {
+        "id": "Q1",
+        "category": "travel",
+        "question": "What is the nightly hotel reimbursement limit for domestic Tier-1 cities like New York or San Francisco?",
+        "expected_answer_keywords": [
+            "250",
+            "tier-1"
+        ],
+        "expected_doc": "travel-policy",
+        "expected_page": 2
+    },
+    {
+        "id": "Q2",
+        "category": "travel",
+        "question": "Under what condition is an employee allowed to fly business class?",
+        "expected_answer_keywords": [
+            "6 hours",
+            "international",
+            "vp"
+        ],
+        "expected_doc": "travel-policy",
+        "expected_page": 1
+    },
+    {
+        "id": "Q3",
+        "category": "remote",
+        "question": "How much is the one-time home office setup stipend and when must it be spent?",
+        "expected_answer_keywords": [
+            "800",
+            "60 days"
+        ],
+        "expected_doc": "remote-work-policy",
+        "expected_page": 2
+    },
+    {
+        "id": "Q4",
+        "category": "remote",
+        "question": "What are the required core collaboration hours for remote workers?",
+        "expected_answer_keywords": [
+            "10:00",
+            "4:00"
+        ],
+        "expected_doc": "remote-work-policy",
+        "expected_page": 1
+    },
+    {
+        "id": "Q5",
+        "category": "finance",
+        "question": "What spending approval is required for purchases exceeding $50,000?",
+        "expected_answer_keywords": [
+            "cfo",
+            "ceo"
+        ],
+        "expected_doc": "finance-policy",
+        "expected_page": 1
+    },
+    {
+        "id": "Q6",
+        "category": "finance",
+        "question": "Within how many days must an employee submit their expense reports after incurring expenses?",
+        "expected_answer_keywords": [
+            "30",
+            "calendar days"
+        ],
+        "expected_doc": "finance-policy",
+        "expected_page": 2
+    },
+    {
+        "id": "Q7_NEGATIVE",
+        "category": "out_of_scope",
+        "question": "What is the company discount for purchasing SpaceX rocket tickets?",
+        "expected_answer_keywords": [
+            "not available",
+            "unavailable"
+        ],
+        "expected_doc": "none",
+        "expected_page": 0
+    }
+]

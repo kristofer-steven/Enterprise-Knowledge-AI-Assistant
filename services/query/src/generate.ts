@@ -54,18 +54,58 @@ ${userQuery}
 
 ANSWER:`;
 
-    // 4. Call Gemini Model
-    const modelName = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
-    const response = await ai.models.generateContent({
-        model: modelName,
-        contents: prompt,
-        config: {
-            systemInstruction,
-            temperature: 0.1, // Low temperature for maximum factual consistency
-        },
-    });
+    // 4. Call Gemini Model with fallback models for quota resiliency
+    const candidateModels = [
+        process.env.GEMINI_MODEL || 'gemini-3.5-flash',
+        'gemini-3.7-flash',
+        'gemini-3.8-flash',
+        'gemini-flash-latest',
+    ];
+
+    let response: any;
+    let lastError: any;
+
+    for (const currentModel of candidateModels) {
+        try {
+            response = await ai.models.generateContent({
+                model: currentModel,
+                contents: prompt,
+                config: {
+                    systemInstruction,
+                    temperature: 0.1, // Low temperature for maximum factual consistency
+                },
+            });
+            lastError = null;
+            break;
+        } catch (err: any) {
+            lastError = err;
+            const isQuotaOrRateLimit = err.status === 429 || String(err.message || '').includes('429');
+            if (isQuotaOrRateLimit) {
+                console.log(`[Gemini Quota] Model ${currentModel} rate-limited. Falling back to next available model...`);
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                continue;
+            }
+            throw err;
+        }
+    }
+
+    if (lastError && !response) {
+        throw lastError;
+    }
 
     const answerText = response.text ? response.text.trim() : 'Unable to generate answer.';
+
+    // If model refuses because information is not in knowledge base, do not cite unrelated chunks
+    const isRefusal = answerText.toLowerCase().includes('not available in the company knowledge base')
+        || answerText.toLowerCase().includes('not available in the knowledge base');
+
+    if (isRefusal) {
+        return {
+            answer: 'Information not available in the company knowledge base.',
+            sources: [],
+            confidence: 'none',
+        };
+    }
 
     // 5. Build Structured Citation Sources (de-duplicated by document and page)
     const sourcesMap = new Map<string, CitationSource>();
