@@ -37,6 +37,19 @@ services:
     networks:
       - app-network
 
+  mcp:
+    build:
+      context: ./services/mcp
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    env_file:
+      - .env
+    depends_on:
+      - query
+    networks:
+      - app-network
+
 volumes:
   n8n-data:
   
