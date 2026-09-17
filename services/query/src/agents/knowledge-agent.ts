@@ -2,9 +2,9 @@ import { GoogleGenAI } from '@google/genai';
 import { retrieveRelevantChunks } from '../retrieve.js';
 import { A2ATaskRequest, A2ATaskResponse, A2ASourceCitation } from './types.js';
 import { handleA2ADelegation } from './a2a-service.js';
+import { generateContentWithFallback } from './gemini-client.js';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
 const KNOWLEDGE_AGENT_SYSTEM_PROMPT = `You are the ACME Technical Knowledge Agent.
 Your domain expertise covers: Engineering Architecture, IT Infrastructure, Cybersecurity Standards, Developer Handbooks, and General Documentation.
@@ -70,8 +70,7 @@ export async function executeKnowledgeAgent(request: A2ATaskRequest): Promise<A2
 
     const prompt = `Technical Question: ${request.query}\n\nContext:\n${contextText}\n\nAnswer:`;
 
-    const response = await ai.models.generateContent({
-        model: modelName,
+    const response = await generateContentWithFallback(ai, {
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         config: {
             systemInstruction: KNOWLEDGE_AGENT_SYSTEM_PROMPT,

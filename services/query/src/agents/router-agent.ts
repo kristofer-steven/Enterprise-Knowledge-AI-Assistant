@@ -1,8 +1,8 @@
 import { GoogleGenAI, Type } from '@google/genai';
 import { RouterClassification, RouterClassificationSchema } from './types.js';
+import { generateContentWithFallback } from './gemini-client.js';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
 const ROUTER_SYSTEM_PROMPT = `You are the ACME Multi-Agent Router.
 Analyze the user's inquiry and classify it to the most qualified specialist agent.
@@ -15,8 +15,7 @@ Output MUST strictly follow the requested JSON schema.`;
 
 export async function routeQuery(userQuery: string): Promise<RouterClassification> {
     try {
-        const response = await ai.models.generateContent({
-            model: modelName,
+        const response = await generateContentWithFallback(ai, {
             contents: [
                 {
                     role: 'user',
