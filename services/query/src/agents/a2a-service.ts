@@ -1,6 +1,8 @@
-import { A2ATaskRequest, A2ATaskResponse, AgentId } from './types.js';
+import { randomUUID } from 'crypto';
+import { A2ATaskRequest, A2ATaskResponse, AgentId, MultiAgentChatResponse } from './types.js';
 import { AgentRegistry } from './registry.js';
 import { executePolicyAgent } from './policy-agent.js';
+import { routeQuery } from './router-agent.js';
 
 /**
  * Dispatches an A2A task request directly to the target agent executor.
@@ -49,8 +51,49 @@ export async function handleA2ADelegation(request: A2ATaskRequest): Promise<A2AT
     // 4. Return response marked with delegation provenance
     return {
         ...response,
-        delegated: true,
+        delegated: request.sender_agent !== 'user' && request.sender_agent !== 'router-agent',
         delegated_to: targetAgentId,
         execution_time_ms: Date.now() - startTime
+    };
+}
+
+/**
+ * Orchestrates an end-to-end multi-agent chat interaction:
+ * 1. Router Agent classifies the intent and domain.
+ * 2. Creates an A2A task request envelope.
+ * 3. Delegates execution to the chosen specialist agent.
+ * 4. Returns unified response with provenance.
+ */
+export async function orchestrateMultiAgentChat(userQuery: string): Promise<MultiAgentChatResponse> {
+    const totalStart = Date.now();
+
+    // 1. Router Agent analyzes intent and classifies query
+    const routing = await routeQuery(userQuery);
+    console.log(`[Router Agent] Query: "${userQuery}" ──► Target: ${routing.target_agent} (Confidence: ${routing.confidence}, Category: ${routing.category})`);
+
+    // 2. Build A2A Task Envelope
+    const taskRequest: A2ATaskRequest = {
+        task_id: randomUUID(),
+        sender_agent: 'router-agent',
+        target_agent: routing.target_agent,
+        query: userQuery,
+        timestamp: new Date().toISOString()
+    };
+
+    // 3. Delegate to selected specialist agent
+    const agentResponse = await handleA2ADelegation(taskRequest);
+
+    return {
+        success: true,
+        query: userQuery,
+        routed_to: routing.target_agent,
+        routing_reason: routing.reasoning,
+        routing_confidence: routing.confidence,
+        response: agentResponse,
+        provenance: {
+            router_model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+            agent_model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+            total_latency_ms: Date.now() - totalStart
+        }
     };
 }
