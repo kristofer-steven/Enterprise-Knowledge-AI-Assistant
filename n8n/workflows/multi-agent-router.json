@@ -1,0 +1,155 @@
+{
+    "name": "Multi-Agent Router & A2A Workflow",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "agent-chat",
+                "responseMode": "responseNode",
+                "options": {}
+            },
+            "id": "webhook-in",
+            "name": "Webhook Inbound",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                200,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "http://query:3002/api/agents/chat",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"message\": \"{{ $json.body.message }}\"\n}",
+                "options": {}
+            },
+            "id": "http-query-agent",
+            "name": "Call Multi-Agent Engine",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                420,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json.routed_to }}",
+                                        "rightValue": "policy-agent",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json.routed_to }}",
+                                        "rightValue": "knowledge-agent",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "switch-agent-branch",
+            "name": "Switch on Routed Agent",
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.2,
+            "position": [
+                660,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={\n  \"answer\": \"{{ $json.response.answer }}\",\n  \"agent\": \"{{ $json.routed_to }}\",\n  \"routing_reason\": \"{{ $json.routing_reason }}\",\n  \"sources\": {{ JSON.stringify($json.response.sources) }},\n  \"confidence\": {{ $json.response.confidence }}\n}",
+                "options": {}
+            },
+            "id": "respond-webhook",
+            "name": "Respond to Webhook",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1.1,
+            "position": [
+                920,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook Inbound": {
+            "main": [
+                [
+                    {
+                        "node": "Call Multi-Agent Engine",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Call Multi-Agent Engine": {
+            "main": [
+                [
+                    {
+                        "node": "Switch on Routed Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Switch on Routed Agent": {
+            "main": [
+                [
+                    {
+                        "node": "Respond to Webhook",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Respond to Webhook",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
