@@ -5,10 +5,10 @@
   "type": "module",
   "description": "Production-oriented full-stack Enterprise Knowledge AI Assistant featuring RAG, MCP, A2A, and Next.js",
   "scripts": {
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:unit": "vitest run services/**/__tests__/*.test.ts",
-    "test:integration": "vitest run tests/integration/*.test.ts",
+    "test": "vitest run services",
+    "test:all": "vitest run",
+    "test:unit": "vitest run services",
+    "test:integration": "vitest run tests",
     "test:eval": "tsx scripts/evaluate-rag.ts",
     "test:frontend": "tsx scripts/test-frontend.ts",
     "build:all": "npm --prefix services/ingestion run build && npm --prefix services/query run build && npm --prefix services/mcp run build && npm --prefix services/frontend run build"

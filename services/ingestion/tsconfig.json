@@ -21,8 +21,11 @@
     // Instead of:     import * as express from 'express'
     "esModuleInterop": true
   },
-  // Only compile files inside src/ — ignores node_modules, scripts, etc.
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "src/**/__tests__/**/*",
+    "**/*.test.ts"
   ]
 }

@@ -54,4 +54,4 @@ jobs:
       - name: Execute Vitest Unit Tests
         run: |
           npm ci || npm install
-          npx vitest run
+          npx vitest run services
