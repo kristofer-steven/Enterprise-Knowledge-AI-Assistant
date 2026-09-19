@@ -1,0 +1,57 @@
+name: Enterprise Knowledge AI Assistant CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-monorepo:
+    name: Lint, Typecheck & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # 1. Ingestion Service Checks
+      - name: Ingestion Service — Dependencies & Build
+        run: |
+          cd services/ingestion
+          npm ci
+          npm run build
+
+      # 2. Query & Agent Service Checks
+      - name: Query Service — Dependencies & Build
+        run: |
+          cd services/query
+          npm ci
+          npm run build
+
+      # 3. MCP Server Checks
+      - name: MCP Server — Dependencies & Build
+        run: |
+          cd services/mcp
+          npm ci
+          npm run build
+
+      # 4. Next.js Frontend Checks
+      - name: Frontend — Dependencies, Lint & Build
+        run: |
+          cd services/frontend
+          npm ci
+          npm run lint
+          npm run build
+
+      # 5. Run Monorepo Unit Tests
+      - name: Execute Vitest Unit Tests
+        run: |
+          npm ci || npm install
+          npx vitest run
