@@ -4,4 +4,6 @@ dist/
 .env.*
 !.env.example
 n8n-data/
+.next/
+*.tsbuildinfo
 docs/week-*-guide.md
