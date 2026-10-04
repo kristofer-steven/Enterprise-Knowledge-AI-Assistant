@@ -70,7 +70,7 @@ An enterprise-grade, full-stack AI application demonstrating **Enterprise Retrie
 
 ---
 
-## 📊 Evaluation & Benchmark Results (PRD Section 28)
+## 📊 Evaluation & Benchmark Results
 
 The system was evaluated against the formal PRD test dataset (`evaluation/questions.json`) using `scripts/evaluate-rag.ts`:
 
