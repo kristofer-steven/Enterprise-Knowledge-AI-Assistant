@@ -1,4 +1,4 @@
-# 🏢 Enterprise Knowledge AI Assistant
+# Enterprise Knowledge AI Assistant
 
 [![CI/CD](https://github.com/kristofer-steven/Enterprise-Knowledge-AI-Assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/kristofer-steven/Enterprise-Knowledge-AI-Assistant/actions)
 [![Next.js](https://img.shields.io/badge/Frontend-Next.js%2014-black?logo=next.js)](https://nextjs.org/)
@@ -12,19 +12,19 @@ An enterprise-grade, full-stack AI application demonstrating **Enterprise Retrie
 
 ---
 
-## 🌟 Key Capabilities
+## Key Capabilities
 
-- **🤖 Supervisor Router Agent**: Dynamically classifies user queries with structured JSON output and temperature `0.0`, dispatching to domain specialists (**Policy Agent** for Travel, HR, and Finance vs. **Knowledge Agent** for Engineering and Architecture).
-- **🤝 Agent-to-Agent (A2A) Collaborative Handoff**: Standardized JSON-RPC protocol allowing specialist agents to autonomously delegate cross-domain questions while maintaining full audit provenance.
-- **🛠️ Model Context Protocol (MCP)**: Decoupled tool server exposing `search_documents`, `get_document`, and `list_documents` over standardized schemas.
-- **📄 Grounded Responses & Source Citations**: Zero-hallucination policy answers featuring exact document name, section, page number, and similarity match percentage pills.
-- **🔍 Observability DAG Trace Debugger**: Interactive execution waterfall visualization tracing router decisions, retrieval candidates, and latency cascades.
-- **🛡️ Multi-Model Fallback Resiliency**: Cascading fallback engine across Google Gemini models (`gemini-flash-lite-latest` ──► `gemini-3.5-flash-lite` ──► `gemini-3.1-flash-lite` ──► `gemini-3.6-flash`) for uninterrupted operation during quota spikes.
-- **🚫 Hallucination Defense & Negative Testing**: Strict rejection of out-of-scope inquiries without vector evidence.
+- **Supervisor Router Agent**: Dynamically classifies user queries with structured JSON output and temperature `0.0`, dispatching to domain specialists (**Policy Agent** for Travel, HR, and Finance vs. **Knowledge Agent** for Engineering and Architecture).
+- **Agent-to-Agent (A2A) Collaborative Handoff**: Standardized JSON-RPC protocol allowing specialist agents to autonomously delegate cross-domain questions while maintaining full audit provenance.
+- **Model Context Protocol (MCP)**: Decoupled tool server exposing `search_documents`, `get_document`, and `list_documents` over standardized schemas.
+- **Grounded Responses & Source Citations**: Zero-hallucination policy answers featuring exact document name, section, page number, and similarity match percentage pills.
+- **Observability DAG Trace Debugger**: Interactive execution waterfall visualization tracing router decisions, retrieval candidates, and latency cascades.
+- **Multi-Model Fallback Resiliency**: Cascading fallback engine across Google Gemini models (`gemini-flash-lite-latest` ──► `gemini-3.5-flash-lite` ──► `gemini-3.1-flash-lite` ──► `gemini-3.6-flash`) for uninterrupted operation during quota spikes.
+- **Hallucination Defense & Negative Testing**: Strict rejection of out-of-scope inquiries without vector evidence.
 
 ---
 
-## 📐 System Architecture
+## System Architecture
 
 ```text
                                ┌─────────────────────────────┐
@@ -70,7 +70,7 @@ An enterprise-grade, full-stack AI application demonstrating **Enterprise Retrie
 
 ---
 
-## 📊 Evaluation & Benchmark Results
+## Evaluation & Benchmark Results
 
 The system was evaluated against the formal PRD test dataset (`evaluation/questions.json`) using `scripts/evaluate-rag.ts`:
 
@@ -86,7 +86,7 @@ The system was evaluated against the formal PRD test dataset (`evaluation/questi
 
 ---
 
-## 🚀 Quickstart & Setup
+## Quickstart & Setup
 
 ### 1. Prerequisites
 - Docker & Docker Compose
@@ -128,7 +128,7 @@ npm --prefix services/frontend run dev
 
 ---
 
-## 🧪 Automated Testing & Quality Assurance
+## Automated Testing & Quality Assurance
 
 The monorepo contains a multi-tier testing suite:
 
@@ -148,7 +148,7 @@ npm run test:eval
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 ├── .github/workflows/ci.yml       # Production CI/CD Pipeline
