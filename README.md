@@ -171,15 +171,3 @@ npm run test:eval
     ├── mcp/                       # Model Context Protocol server
     └── query/                     # Multi-Agent supervisor & RAG engine
 ```
-
----
-
-## 💼 Technical Interview Framing & Resume Bullet
-
-> **Resume Bullet:**
-> *Architected and developed a full-stack Enterprise Knowledge Assistant using Next.js, RAG, Model Context Protocol (MCP), and Multi-Agent Orchestration (Supervisor & A2A); built resilient chunking, Qdrant vector retrieval, and automated CI/CD pipelines, achieving 100% precision and grounded accuracy on benchmark evaluations.*
-
----
-
-## 📄 License
-MIT License. Created for technical portfolio demonstration.
