@@ -171,3 +171,8 @@ npm run test:eval
     ├── mcp/                       # Model Context Protocol server
     └── query/                     # Multi-Agent supervisor & RAG engine
 ```
+
+## Preview
+<img width="2561" height="1400" alt="Enterprise-Knowledge-AI-Assistant-09-20-2026_01_59_PM" src="https://github.com/user-attachments/assets/200ad4bf-b43c-4a9d-8b25-7e0af30beb0f" /><img width="2561" height="1398" alt="Enterprise-Knowledge-AI-Assistant-09-20-2026_02_00_PM" src="https://github.com/user-attachments/assets/e5015759-9384-4f58-9824-a7421c064630" />
+<img width="2561" height="1398" alt="Enterprise-Knowledge-AI-Assistant-09-20-2026_01_59_PM_1" src="https://github.com/user-attachments/assets/17438086-ae55-4ae2-a1e1-f06d656b307f" />
+
